@@ -1,0 +1,32 @@
+# This workflow will install Python dependencies, sync repositories from github to gitee or reversely.
+
+name: Sync repositories from github to gitee or reversely
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.10"
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    - name: Print environment variables
+      run: |
+        python print_env.py
+    - name: Sync repositories
+      run: |
+          python main.py
