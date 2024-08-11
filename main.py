@@ -56,8 +56,7 @@ def sync_repo_mirror(base_client, mirror_client):
                 user = mirror_client.client.get_user()
                 new_repo = user.create_repo(
                     name=repo.name,
-                    description=repo.description,
-                    auto_init=True
+                    description=repo.description
                 )
                 print(f"Repository '{repo_name}' created successfully.")
 
@@ -70,8 +69,8 @@ def sync_repo_mirror(base_client, mirror_client):
 
                     local_repo = Repo(tmp_dir)
                     print(dir(local_repo))
-                    origin = local_repo.remotes.origin
-                    print(origin)
+                    # origin = local_repo.remotes.origin
+                    # print(origin)
                     # origin.set_url(f'https://{mirror_client.website}.com/{mirror_client.owner}/{repo_name}.git')
                     # print(f"Pushed to url: {repo.remotes.origin.url}")
                     # repo_url = (f'https://{mirror_client.owner}:{mirror_client.access_token}@{mirror_client.website}.com'
