@@ -69,16 +69,16 @@ def sync_repo_mirror(base_client, mirror_client):
                     print(f"Repository '{repo_name}' cloned successfully.")
 
                     local_repo = Repo(tmp_dir)
-                    print(getattr(repo, 'remotes'))
-                    origin = local_repo.remotes.origin
-                    origin.set_url(f'https://{mirror_client.website}.com/{mirror_client.owner}/{repo_name}.git')
-                    print(f"Pushed to url: {repo.remotes.origin.url}")
-                    repo_url = (f'https://{mirror_client.owner}:{mirror_client.access_token}@{mirror_client.website}.com'
-                                f'/{mirror_client.owner}/{repo_name}.git')
-                    print(repo_url)
-                    local_repo.git.push("--all", repo_url)
-                    local_repo.git.push("--tags", repo_url)
-                    # Update repository visibility (gitee not allow to create an empty public repository)
+                    print(dir(local_repo))
+                    # origin = local_repo.remotes.origin
+                    # origin.set_url(f'https://{mirror_client.website}.com/{mirror_client.owner}/{repo_name}.git')
+                    # print(f"Pushed to url: {repo.remotes.origin.url}")
+                    # repo_url = (f'https://{mirror_client.owner}:{mirror_client.access_token}@{mirror_client.website}.com'
+                    #             f'/{mirror_client.owner}/{repo_name}.git')
+                    # print(repo_url)
+                    # local_repo.git.push("--all", repo_url)
+                    # local_repo.git.push("--tags", repo_url)
+                    
                     new_repo.edit(private=repo.private)
                     time.sleep(5)
                     print(f"Pushed to mirror repository successfully.")
