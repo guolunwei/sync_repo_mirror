@@ -5,7 +5,7 @@ GITEE_TOKEN = os.environ.get("gitee_token", "")
 
 SYNC_DIRECTION = os.environ.get("sync_direction", "github2gitee")
 
-REPO_LIST = ["ansible-prometheus"]
+REPO_LIST = ["ansible-zabbix"]
 # REPO_LIST = []
 EXCLUDED_REPO_LIST = [
     "get_info",
