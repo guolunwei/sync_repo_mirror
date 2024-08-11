@@ -56,7 +56,8 @@ def sync_repo_mirror(base_client, mirror_client):
                 user = mirror_client.client.get_user()
                 new_repo = user.create_repo(
                     name=repo.name,
-                    description=repo.description
+                    description=repo.description,
+                    private=True
                 )
                 print(f"Repository '{repo_name}' created successfully.")
 
