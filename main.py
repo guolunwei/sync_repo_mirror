@@ -69,17 +69,17 @@ def sync_repo_mirror(base_client, mirror_client):
                     print(f"Repository '{repo_name}' cloned successfully.")
                     print(dir(local_repo))
 
-                    # local_repo = Repo(tmp_dir)
-                    # print(dir(local_repo))
-                    # origin = local_repo.remotes.origin
-                    # print(origin)
-                    # origin.set_url(f'https://{mirror_client.website}.com/{mirror_client.owner}/{repo_name}.git')
-                    # print(f"Pushed to url: {repo.remotes.origin.url}")
-                    # repo_url = (f'https://{mirror_client.owner}:{mirror_client.access_token}@{mirror_client.website}.com'
-                    #             f'/{mirror_client.owner}/{repo_name}.git')
-                    # print(repo_url)
-                    # local_repo.git.push("--all", repo_url)
-                    # local_repo.git.push("--tags", repo_url)
+                    local_repo = Repo(tmp_dir)
+                    print(dir(local_repo))
+                    origin = local_repo.remotes.origin
+                    print(origin)
+                    origin.set_url(f'https://{mirror_client.website}.com/{mirror_client.owner}/{repo_name}.git')
+                    print(f"Pushed to url: {repo.remotes.origin.url}")
+                    repo_url = (f'https://{mirror_client.owner}:{mirror_client.access_token}@{mirror_client.website}.com'
+                                f'/{mirror_client.owner}/{repo_name}.git')
+                    print(repo_url)
+                    local_repo.git.push("--all", repo_url)
+                    local_repo.git.push("--tags", repo_url)
 
                     # Set repository private property
                     new_repo.edit(private=repo.private)
