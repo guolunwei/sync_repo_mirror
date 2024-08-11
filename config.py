@@ -7,7 +7,7 @@ GITEE_PRIVATE_KEY = os.environ.get("gitee_private_key", "")
 
 SYNC_DIRECTION = os.environ.get("sync_direction", "github2gitee")
 
-REPO_LIST = ["ansible-prometheus"]
+REPO_LIST = ["backup_repo"]
 EXCLUDED_REPO_LIST = [
     "get_info",
     "KeepAliveE5",
