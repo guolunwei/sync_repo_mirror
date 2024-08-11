@@ -47,7 +47,7 @@ def sync_repo_mirror(base_client, mirror_client):
         print(f"[{cnt}/{len(scan_repo_names)}] start scan repo: {base_client.owner}/{repo_name}")
         cnt += 1
 
-        if repo_name in mirror_repo_list:
+        if repo_name not in mirror_repo_list:
             try:
                 repo = base_client.client.get_repo(f"{base_client.owner}/{repo_name}")
 
