@@ -79,13 +79,12 @@ class SyncRepoMirror:
         if self.sync_repos:
             i = 1
             for repo in self.sync_repos:
-                print(f"[{i}/{len(self.sync_repos)}] start scan repo: {repo.full_name}")
+                print(f"\n[{i}/{len(self.sync_repos)}] start scan repo: {repo.full_name}")
                 if repo.name not in self.mirror_repo_names:
                     self.create_mirror_repo(repo)
                 else:
                     self.update_mirror_repo(repo)
                 i += 1
-                print("\n")
         else:
             return
 
