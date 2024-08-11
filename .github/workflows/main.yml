@@ -32,6 +32,6 @@ jobs:
     - name: Print environment variables
       run: |
         python print_env.py
-    # - name: Sync repositories
-    #   run: |
-    #       python main.py
+    - name: Sync repositories
+      run: |
+          python main.py
