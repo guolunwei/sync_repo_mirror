@@ -72,8 +72,10 @@ def sync_repo_mirror(base_client, mirror_client):
                     origin = repo.remotes.origin
                     origin.set_url(f'https://{mirror_client.website}.com/{mirror_client.owner}/{repo_name}.git')
                     print(f"Pushed to url: {repo.remotes.origin.url}")
-                    repo.git.push("--all")
-                    repo.git.push("--tags")
+                    repo_url = f'https://{mirror_client.owner}:{mirror_client.access_token}@{mirror_client.website}.com/{mirror_client.owner}/{repo_name}.git'
+                    print(repo_url)
+                    repo.git.push("--all", repo_url)
+                    repo.git.push("--tags", repo_url)
                     time.sleep(5)
                     print(f"Pushed to mirror repository successfully.")
 
