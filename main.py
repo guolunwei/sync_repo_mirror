@@ -1,5 +1,6 @@
 import os
 import time
+import tempfile
 
 from github import Auth, Github
 from git import Repo
@@ -69,17 +70,19 @@ def sync_repo_mirror(base_client: GitClient, mirror_client: GitClient):
 
                 # Clone repository from base and push it to mirror
                 clone_url = repo.clone_url if repo.clone_url else repo.html_url
-                Repo.clone_from(clone_url, f'./{repo_name}')
-                print(f"Repository '{repo_name}' cloned successfully.")
-                repo = Repo(f'./{repo_name}')
-                origin = repo.remotes.origin
-                origin.set_url(f'https://{mirror_client.website}.com/{mirror_client.owner}/{repo_name}.git')
-                print(f"Pushed to url: {repo.remotes.origin.url}")
-                repo.git.push("--all")
-                repo.git.push("--tags")
-                time.sleep(5)
-                print(f"Pushed to mirror repository successfully.")
-                os.remove(f'./{repo_name}')
+                with open tempfile.TemporaryDirectory() as tmp_dir:
+                    print(f"Cloning repository '{repo_name}' from '{clone_url}' to temp directory: {tmp_dir}")
+                    Repo.clone_from(clone_url, tmp_dir)
+                    print(f"Repository '{repo_name}' cloned successfully.")
+
+                    repo = Repo(tmp_dir)
+                    origin = repo.remotes.origin
+                    origin.set_url(f'https://{mirror_client.website}.com/{mirror_client.owner}/{repo_name}.git')
+                    print(f"Pushed to url: {repo.remotes.origin.url}")
+                    repo.git.push("--all")
+                    repo.git.push("--tags")
+                    time.sleep(5)
+                    print(f"Pushed to mirror repository successfully.")
 
                 # Update repository visibility (gitee not allow to create an empty public repository)
             except Exception as e:
