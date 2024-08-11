@@ -69,6 +69,7 @@ def sync_repo_mirror(base_client, mirror_client):
                     print(f"Repository '{repo_name}' cloned successfully.")
 
                     local_repo = Repo(tmp_dir)
+                    print(getattr(repo, 'remotes'))
                     origin = local_repo.remotes.origin
                     origin.set_url(f'https://{mirror_client.website}.com/{mirror_client.owner}/{repo_name}.git')
                     print(f"Pushed to url: {repo.remotes.origin.url}")
