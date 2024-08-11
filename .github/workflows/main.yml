@@ -15,7 +15,7 @@ jobs:
     env:
       github_token: ${{ secrets.GIT_TOKEN }}
       gitee_token: ${{ secrets.GITEE_TOKEN }}
-      sync_direction: ${{ SYNC_DIRECTION }}
+      sync_direction: ${{ vars.SYNC_DIRECTION }}
 
     runs-on: ubuntu-latest
 
