@@ -57,7 +57,7 @@ def sync_repo_mirror(base_client, mirror_client):
                 new_repo = user.create_repo(
                     name=repo.name,
                     description=repo.description,
-                    license_template='MIT'
+                    license_template=repo.license if repo.license else 'MIT'
                 )
                 print(f"Repository '{repo_name}' created successfully.")
 
@@ -78,6 +78,7 @@ def sync_repo_mirror(base_client, mirror_client):
                     repo_url = (f'https://{mirror_client.owner}:{mirror_client.access_token}@{mirror_client.website}.com'
                                 f'/{mirror_client.owner}/{repo_name}.git')
                     print(repo_url)
+                    local_repo.git.pull("--all", repo_url)
                     local_repo.git.push("--all", repo_url)
                     local_repo.git.push("--tags", repo_url)
 
