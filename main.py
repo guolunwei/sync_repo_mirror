@@ -65,8 +65,9 @@ def sync_repo_mirror(base_client, mirror_client):
                 clone_url = repo.clone_url if repo.clone_url else repo.html_url
                 with tempfile.TemporaryDirectory() as tmp_dir:
                     print(f"Cloning repository '{repo_name}' from '{clone_url}' to temp directory: {tmp_dir}")
-                    Repo.clone_from(clone_url, tmp_dir)
+                    local_repo = Repo.clone_from(clone_url, tmp_dir)
                     print(f"Repository '{repo_name}' cloned successfully.")
+                    print(dir(local_repo))
 
                     # local_repo = Repo(tmp_dir)
                     # print(dir(local_repo))
