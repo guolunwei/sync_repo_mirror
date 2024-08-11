@@ -1,7 +1,6 @@
 import os
 import time
 import tempfile
-
 from github import Auth, Github
 from git import Repo
 
@@ -14,32 +13,25 @@ class GitClient:
         self.owner = self.client.get_user().login
         self.repo_names = self.get_repo_names()
 
-    def get_git_client(self) -> Github:
+    def get_git_client(self):
         auth = Auth.Token(self.access_token)
-        if self.website.lower().strip() == 'gitee':
-            base_url = "https://gitee.com/api/v5"
-        else:
-            base_url = "https://api.github.com"
+        base_url = "https://gitee.com/api/v5" if self.website.lower().strip() == 'gitee' else "https://api.github.com"
         g = Github(auth=auth, base_url=base_url)
         return g
 
-    def get_repo_names(self) -> list[str]:
+    def get_repo_names(self):
         user = self.client.get_user()
         repos = user.get_repos()
         return [i.name for i in repos]
 
-    def get_latest_commit_id(self, repo_name: str) -> str:
+    def get_latest_commit_id(self, repo_name):
         repo = self.client.get_repo(f"{self.owner}/{repo_name}")
         commits = repo.get_commits()
         commit_id = commits[0].raw_data['sha']
         return commit_id
 
 
-class GitRepoSync:
-    pass
-
-
-def sync_repo_mirror(base_client: GitClient, mirror_client: GitClient):
+def sync_repo_mirror(base_client, mirror_client):
     if config.REPO_LIST:
         repo_list = config.REPO_LIST
     else:
@@ -70,7 +62,7 @@ def sync_repo_mirror(base_client: GitClient, mirror_client: GitClient):
 
                 # Clone repository from base and push it to mirror
                 clone_url = repo.clone_url if repo.clone_url else repo.html_url
-                with open tempfile.TemporaryDirectory() as tmp_dir:
+                with tempfile.TemporaryDirectory() as tmp_dir:
                     print(f"Cloning repository '{repo_name}' from '{clone_url}' to temp directory: {tmp_dir}")
                     Repo.clone_from(clone_url, tmp_dir)
                     print(f"Repository '{repo_name}' cloned successfully.")
@@ -99,7 +91,7 @@ def sync_repo_mirror(base_client: GitClient, mirror_client: GitClient):
                 if base_commit_id == mirror_commit_id:
                     print(f"Repository {mirror_client.owner}/{repo_name} updated to latest. commit id: {base_commit_id}")
                 else:
-                    print(f"update failed, please check manually. commit id: {base_commit_id}")
+                    print(f"Update failed, please check manually. commit id: {base_commit_id}")
             except Exception as e:
                 print(f"Error updating mirror to latest: {e}")
 
