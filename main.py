@@ -1,4 +1,3 @@
-import os
 import time
 import tempfile
 from github import Auth, Github
@@ -49,6 +48,7 @@ def sync_repo_mirror(base_client, mirror_client):
         cnt += 1
 
         if repo_name not in mirror_repo_list:
+            new_repo = None
             try:
                 repo = base_client.client.get_repo(f"{base_client.owner}/{repo_name}")
 
@@ -72,7 +72,8 @@ def sync_repo_mirror(base_client, mirror_client):
                     origin = local_repo.remotes.origin
                     origin.set_url(f'https://{mirror_client.website}.com/{mirror_client.owner}/{repo_name}.git')
                     print(f"Pushed to url: {repo.remotes.origin.url}")
-                    repo_url = f'https://{mirror_client.owner}:{mirror_client.access_token}@{mirror_client.website}.com/{mirror_client.owner}/{repo_name}.git'
+                    repo_url = (f'https://{mirror_client.owner}:{mirror_client.access_token}@{mirror_client.website}.com'
+                                f'/{mirror_client.owner}/{repo_name}.git')
                     print(repo_url)
                     local_repo.git.push("--all", repo_url)
                     local_repo.git.push("--tags", repo_url)
@@ -80,9 +81,13 @@ def sync_repo_mirror(base_client, mirror_client):
                     new_repo.edit(private=repo.private)
                     time.sleep(5)
                     print(f"Pushed to mirror repository successfully.")
-                
+
             except Exception as e:
                 print(f"Error synchronizing base to mirror: {e}")
+                if new_repo:
+                    new_repo.delete()
+                    print(f"Repository '{repo_name}' deleted successfully.")
+
         else:
             try:
                 # Compare commit id to decide whether synchronize or not
@@ -90,10 +95,12 @@ def sync_repo_mirror(base_client, mirror_client):
                 mirror_commit_id = mirror_client.get_latest_commit_id(repo_name)
 
                 if base_commit_id != mirror_commit_id:
-                    print(f"Repository {mirror_client.owner}/{repo_name} newest commit id: {base_commit_id}, updating...")
+                    print(
+                        f"Repository {mirror_client.owner}/{repo_name} newest commit id: {base_commit_id}, updating...")
 
                 if base_commit_id == mirror_commit_id:
-                    print(f"Repository {mirror_client.owner}/{repo_name} updated to latest. commit id: {base_commit_id}")
+                    print(
+                        f"Repository {mirror_client.owner}/{repo_name} updated to latest. commit id: {base_commit_id}")
                 else:
                     print(f"Update failed, please check manually. commit id: {base_commit_id}")
             except Exception as e:
@@ -102,6 +109,7 @@ def sync_repo_mirror(base_client, mirror_client):
 
 if __name__ == '__main__':
     import config
+
     if not config.GITHUB_TOKEN or not config.GITEE_TOKEN:
         raise ValueError("GITHUB_TOKEN or GITEE_TOKEN is empty.")
 
