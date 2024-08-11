@@ -68,18 +68,19 @@ def sync_repo_mirror(base_client, mirror_client):
                     Repo.clone_from(clone_url, tmp_dir)
                     print(f"Repository '{repo_name}' cloned successfully.")
 
-                    repo = Repo(tmp_dir)
-                    origin = repo.remotes.origin
+                    local_repo = Repo(tmp_dir)
+                    origin = local_repo.remotes.origin
                     origin.set_url(f'https://{mirror_client.website}.com/{mirror_client.owner}/{repo_name}.git')
                     print(f"Pushed to url: {repo.remotes.origin.url}")
                     repo_url = f'https://{mirror_client.owner}:{mirror_client.access_token}@{mirror_client.website}.com/{mirror_client.owner}/{repo_name}.git'
                     print(repo_url)
-                    repo.git.push("--all", repo_url)
-                    repo.git.push("--tags", repo_url)
+                    local_repo.git.push("--all", repo_url)
+                    local_repo.git.push("--tags", repo_url)
+                    # Update repository visibility (gitee not allow to create an empty public repository)
+                    new_repo.edit(private=repo.private)
                     time.sleep(5)
                     print(f"Pushed to mirror repository successfully.")
-
-                # Update repository visibility (gitee not allow to create an empty public repository)
+                
             except Exception as e:
                 print(f"Error synchronizing base to mirror: {e}")
         else:
