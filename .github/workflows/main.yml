@@ -12,6 +12,11 @@ on:
 jobs:
   build:
 
+    env:
+      github_token: ${{ secrets.GIT_TOKEN }}
+      gitee_token: ${{ secrets.GITEE_TOKEN }}
+      sync_direction: ${{ variables.SYNC_DIRECTION }}
+
     runs-on: ubuntu-latest
 
     steps:
@@ -27,6 +32,6 @@ jobs:
     - name: Print environment variables
       run: |
         python print_env.py
-    - name: Sync repositories
-      run: |
-          python main.py
+    # - name: Sync repositories
+    #   run: |
+    #       python main.py
