@@ -84,7 +84,7 @@ class SyncRepoMirror:
                     self.create_mirror_repo(repo)
                 else:
                     self.update_mirror_repo(repo)
-                print("")
+                print("\n")
                 i += 1
         else:
             return
@@ -99,7 +99,7 @@ if __name__ == '__main__':
     github = GitClient(config.GITHUB_TOKEN)
     gitee = GitClient(config.GITEE_TOKEN, 'gitee')
 
-    if config.SYNC_DIRECTION == 'github2gitee':
+    if config.SYNC_DIRECTION == 'sync_repositories':
         SyncRepoMirror(github, gitee).run()
     else:
         SyncRepoMirror(gitee, github).run()
