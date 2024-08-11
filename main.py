@@ -57,7 +57,7 @@ def sync_repo_mirror(base_client, mirror_client):
                 new_repo = user.create_repo(
                     name=repo.name,
                     description=repo.description,
-                    license_template='mit'
+                    license_template='MIT'
                 )
                 print(f"Repository '{repo_name}' created successfully.")
 
