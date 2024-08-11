@@ -38,6 +38,7 @@ def sync_repo_mirror(base_client, mirror_client):
         repo_list = base_client.repo_names
 
     mirror_repo_list = mirror_client.repo_names
+    print(mirror_repo_list)
 
     cnt = 1
     scan_repo_names = [i for i in repo_list if i not in config.EXCLUDED_REPO_LIST]
