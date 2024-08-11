@@ -85,11 +85,11 @@ def sync_repo_mirror(base_client, mirror_client):
                     time.sleep(5)
                     print(f"Pushed to mirror repository successfully.")
 
-            except Exception as e:
-                print(f"Error synchronizing base to mirror: {e}")
-                if new_repo:
-                    new_repo.delete()
-                    print(f"Repository '{repo_name}' deleted successfully.")
+            # except Exception as e:
+            #     print(f"Error synchronizing base to mirror: {e}")
+            #     if new_repo:
+            #         new_repo.delete()
+            #         print(f"Repository '{repo_name}' deleted successfully.")
 
         else:
             try:
