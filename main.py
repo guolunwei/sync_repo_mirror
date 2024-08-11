@@ -99,7 +99,7 @@ if __name__ == '__main__':
     github = GitClient(config.GITHUB_TOKEN)
     gitee = GitClient(config.GITEE_TOKEN, 'gitee')
 
-    if config.SYNC_DIRECTION == 'sync_repositories':
+    if config.SYNC_DIRECTION == 'github2gitee':
         SyncRepoMirror(github, gitee).run()
     else:
         SyncRepoMirror(gitee, github).run()
