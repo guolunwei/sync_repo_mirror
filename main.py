@@ -54,19 +54,21 @@ class SyncRepoMirror:
             print(f"Already the latest commit '{self.check_mirror_repo(repo).sha}'")
         else:
             clone_url = repo.clone_url if repo.clone_url else repo.html_url
+            origin_repo_url = clone_url.replace('//', f"//{self.origin.user.login}:{self.origin.access_token}@")
+
             url = clone_url.replace(self.origin.website, self.mirror.website)
-            auth_url = url.replace('//', f"//{self.mirror.user.login}:{self.mirror.access_token}@")
+            mirror_repo_url = url.replace('//', f"//{self.mirror.user.login}:{self.mirror.access_token}@")
             
             with tempfile.TemporaryDirectory() as tmp_dir:
                 print(f"Cloning repository '{repo.name}' from '{clone_url}' to temp directory '{tmp_dir}'")
-                temp_repo = Repo.clone_from(auth_url, tmp_dir)
+                temp_repo = Repo.clone_from(origin_repo_url, tmp_dir)
                 origin = temp_repo.remotes.origin
                 print(f"Repository '{repo.name}' cloned successfully")
   
                 origin.set_url(url)
                 print(f"Pushing to remote '{url}'")
-                temp_repo.git.push("--all", auth_url)
-                temp_repo.git.push("--tags", auth_url)
+                temp_repo.git.push("--all", mirror_repo_url)
+                temp_repo.git.push("--tags", mirror_repo_url)
                 print(f"Pushed to remote '{url}' successfully")
 
                 time.sleep(5)
