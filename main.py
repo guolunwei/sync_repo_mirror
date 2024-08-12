@@ -82,6 +82,7 @@ class SyncRepoMirror:
                 print(f"\n[{i}/{len(self.sync_repos)}] start scan repo: {repo.full_name}")
                 if repo.name not in self.mirror_repo_names:
                     new_repo = self.create_mirror_repo(repo)
+                    self.update_mirror_repo(repo)
                     new_repo.edit(private=repo.private)
                 else:
                     self.update_mirror_repo(repo)
