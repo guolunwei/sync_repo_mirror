@@ -5,7 +5,7 @@ GITEE_TOKEN = os.environ.get("gitee_token", "")
 
 SYNC_DIRECTION = os.environ.get("sync_direction", "github2gitee")
 
-REPO_LIST = []
+REPO_LIST = ["nsd_backup"]
 EXCLUDED_REPO_LIST = [
     "get_info",
     "KeepAliveE5",
