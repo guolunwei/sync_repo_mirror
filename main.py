@@ -73,7 +73,7 @@ class SyncRepoMirror:
                 if self.check_mirror_repo(repo):
                     print(f"Updated to latest commit '{self.check_mirror_repo(repo).sha}'")
                 else:
-                    print(f"Failed updating to latest commit '{self.check_mirror_repo(repo).sha}'")
+                    print(f"Failed updating to latest commit.")
 
     def run(self):
         if self.sync_repos:
